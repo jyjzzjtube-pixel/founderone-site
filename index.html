@@ -36,8 +36,35 @@ ul,li{list-style:none}a{text-decoration:none;color:inherit;transition:.35s}butto
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(201,162,39,.3)}70%{box-shadow:0 0 0 14px rgba(201,162,39,0)}}
 @keyframes count{from{opacity:.5}to{opacity:1}}
 @keyframes slideRight{from{transform:translateX(-8px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes textGlow{0%,100%{text-shadow:0 0 0 transparent}50%{text-shadow:0 0 20px rgba(201,162,39,.15)}}
+@keyframes lineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes subtleBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 
-.rv{opacity:0;transform:translateY(40px);transition:opacity .8s,transform .8s}.rv.on{opacity:1;transform:translateY(0)}
+/* ═══ SCROLL REVEAL ═══ */
+.rv{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94)}.rv.on{opacity:1;transform:translateY(0)}
+.rv-left{opacity:0;transform:translateX(-40px);transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94)}.rv-left.on{opacity:1;transform:translateX(0)}
+.rv-right{opacity:0;transform:translateX(40px);transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94)}.rv-right.on{opacity:1;transform:translateX(0)}
+.rv-scale{opacity:0;transform:scale(.9);transition:opacity .7s,transform .7s cubic-bezier(.25,.46,.45,.94)}.rv-scale.on{opacity:1;transform:scale(1)}
+
+/* ═══ TEXT ANIMATION EFFECTS ═══ */
+.text-highlight{position:relative;display:inline}.text-highlight::after{content:'';position:absolute;bottom:2px;left:0;width:100%;height:30%;background:rgba(201,162,39,.15);z-index:-1;transform:scaleX(0);transform-origin:left;transition:transform .8s cubic-bezier(.25,.46,.45,.94)}.text-highlight.on::after{transform:scaleX(1)}
+.text-shimmer{background:linear-gradient(90deg,var(--navy) 0%,var(--gold) 50%,var(--navy) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.text-shimmer.animate{animation:shimmer 4s linear infinite}
+
+/* ═══ SECTION DIVIDERS ═══ */
+.sec-divider{height:1px;background:linear-gradient(90deg,transparent,var(--goldB),transparent);margin:0 auto;max-width:600px;opacity:0;transition:opacity 1s,max-width 1.2s cubic-bezier(.25,.46,.45,.94)}.sec-divider.on{opacity:1;max-width:600px}
+
+/* ═══ GLOW ACCENT LINE ═══ */
+.glow-line{position:relative}.glow-line::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--goldG);transition:width 1s cubic-bezier(.25,.46,.45,.94);border-radius:2px}.glow-line.on::after{width:80px}
+
+/* ═══ STAGGER DELAY SYSTEM ═══ */
+.stg-1{transition-delay:.05s}.stg-2{transition-delay:.1s}.stg-3{transition-delay:.15s}.stg-4{transition-delay:.2s}.stg-5{transition-delay:.25s}.stg-6{transition-delay:.3s}.stg-7{transition-delay:.35s}.stg-8{transition-delay:.4s}.stg-9{transition-delay:.45s}
 
 /* ═══ NAV ═══ */
 nav{position:fixed;top:0;width:100%;z-index:9000;padding:16px 0;transition:.4s;background:rgba(250,251,252,.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid transparent}
@@ -66,12 +93,14 @@ nav.sk{padding:10px 0;background:rgba(255,255,255,.95);border-color:var(--line);
 .h-tag{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:var(--goldP);color:var(--gold);font-weight:700;font-size:.78rem;border-radius:50px;margin-bottom:28px;border:1px solid var(--goldB);letter-spacing:.5px}
 .h-tag svg{width:14px;height:14px;flex-shrink:0}
 .hero h1{font-size:clamp(2.6rem,5vw,3.8rem);line-height:1.12;color:var(--navy);margin-bottom:16px;font-weight:800;letter-spacing:-1.5px}
-.hero h1 em{font-style:normal;background:var(--goldG);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,#c9a227 0%,#e2bd4a 40%,#f0d67a 60%,#c9a227 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradientShift 4s ease infinite}
 .h-sub{font-size:1.05rem;color:var(--body);max-width:480px;margin-bottom:36px;line-height:1.8}
 .h-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px}
 .h-bw{display:flex;flex-direction:column;gap:6px;align-items:center}
-.btn-p{display:inline-flex;align-items:center;gap:9px;padding:16px 36px;background:var(--navy);color:#fff;font-size:.92rem;font-weight:700;border-radius:50px;box-shadow:0 8px 28px rgba(12,20,37,.2);transition:.4s;letter-spacing:.2px}
+.btn-p{display:inline-flex;align-items:center;gap:9px;padding:16px 36px;background:var(--navy);color:#fff;font-size:.92rem;font-weight:700;border-radius:50px;box-shadow:0 8px 28px rgba(12,20,37,.2);transition:all .4s cubic-bezier(.25,.46,.45,.94);letter-spacing:.2px;position:relative;overflow:hidden}
+.btn-p::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(201,162,39,.15) 50%,transparent 60%);transform:translateX(-100%);transition:none}
 .btn-p:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(12,20,37,.28);background:var(--navy2)}
+.btn-p:hover::before{transform:translateX(100%);transition:transform .7s}
 .btn-p svg{width:18px;height:18px;flex-shrink:0}
 .btn-kk{display:inline-flex;align-items:center;gap:8px;padding:16px 32px;background:var(--kakao);color:var(--kTxt);font-size:.92rem;font-weight:700;border-radius:50px;box-shadow:0 6px 20px rgba(254,229,0,.25);transition:.4s}
 .btn-kk:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(254,229,0,.35);background:#f0d600}
@@ -105,14 +134,18 @@ nav.sk{padding:10px 0;background:rgba(255,255,255,.95);border-color:var(--line);
 .st-grid{display:grid;grid-template-columns:repeat(4,1fr)}
 .st-item{text-align:center;padding:12px;position:relative}
 .st-item:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:rgba(255,255,255,.08)}
-.st-num{font-size:clamp(2rem,4vw,2.8rem);font-weight:800;color:#fff;line-height:1;margin-bottom:6px}
+.st-num{font-size:clamp(2rem,4vw,2.8rem);font-weight:800;color:#fff;line-height:1;margin-bottom:6px;transition:transform .3s}
 .st-num span{color:var(--gold)}
-.st-label{font-size:.72rem;color:rgba(255,255,255,.45);font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.st-num.counted{animation:subtleBounce .6s cubic-bezier(.25,.46,.45,.94)}
+.st-label{font-size:.72rem;color:rgba(255,255,255,.45);font-weight:600;letter-spacing:1px;text-transform:uppercase;transition:color .5s}
+.st-item:hover .st-label{color:rgba(255,255,255,.7)}
+.st-item:hover .st-num{transform:scale(1.05)}
 
 /* ═══ SECTION COMMON ═══ */
 section{padding:100px 0;position:relative}
 .s-head{text-align:center;margin-bottom:64px}
-.s-tag{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px}
+.s-tag{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px;position:relative;padding-bottom:4px}
+.s-tag::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50);width:0;height:1.5px;background:var(--goldG);transition:width .8s cubic-bezier(.25,.46,.45,.94) .2s;border-radius:2px}
 .s-tag svg{width:14px;height:14px}
 .s-title{font-size:clamp(2rem,3.8vw,2.8rem);font-weight:800;color:var(--navy);margin-bottom:14px;line-height:1.2;letter-spacing:-.8px}
 .s-desc{font-size:.98rem;color:var(--body);max-width:640px;margin:0 auto;line-height:1.8}
@@ -120,23 +153,26 @@ section{padding:100px 0;position:relative}
 /* ═══ 8 SERVICE CARDS ═══ */
 .svc-sec{background:var(--bg)}
 .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.svc{background:var(--white);border-radius:var(--rl);border:1px solid var(--line);overflow:hidden;cursor:pointer;transition:.5s cubic-bezier(.16,1,.3,1);position:relative}
+.svc{background:var(--white);border-radius:var(--rl);border:1px solid var(--line);overflow:hidden;cursor:pointer;transition:all .5s cubic-bezier(.16,1,.3,1);position:relative}
 .svc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--goldG);transform:scaleX(0);transform-origin:left;transition:.5s;z-index:2;border-radius:3px 3px 0 0}
-.svc:hover{transform:translateY(-10px);box-shadow:var(--sh3);border-color:var(--goldB)}
+.svc::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,162,39,.02),transparent 60%);opacity:0;transition:opacity .5s;pointer-events:none;z-index:1}
+.svc:hover{transform:translateY(-10px);box-shadow:0 20px 50px rgba(12,20,37,.1),0 8px 20px rgba(201,162,39,.06);border-color:var(--goldB)}
 .svc:hover::before{transform:scaleX(1)}
+.svc:hover::after{opacity:1}
 
 /* Card Top: Illustration Area */
 .svc-vis{height:200px;background:linear-gradient(180deg,#f0f3f8 0%,#f8f9fb 100%);display:flex;align-items:center;justify-content:center;padding:0;position:relative;overflow:hidden;border-bottom:1px solid var(--line);transition:.4s}
 .svc:hover .svc-vis{background:linear-gradient(180deg,#e8ecf4 0%,#f0f3f8 100%)}
-.svc-vis img{width:100%;height:100%;object-fit:cover;object-position:center;transition:.5s cubic-bezier(.16,1,.3,1)}
-.svc:hover .svc-vis img{transform:scale(1.06)}
+.svc-vis img{width:100%;height:100%;object-fit:cover;object-position:center;transition:.6s cubic-bezier(.16,1,.3,1);filter:brightness(1) saturate(1)}
+.svc:hover .svc-vis img{transform:scale(1.06);filter:brightness(1.03) saturate(1.1)}
 
 /* Card Emoji Badge */
 .svc-emoji{position:absolute;top:12px;right:14px;font-size:1.6rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,.08));animation:floatY 4s ease-in-out infinite}
 
 /* Card Body */
 .svc-body{padding:22px 20px 18px}
-.svc-body h3{font-size:.95rem;font-weight:800;color:var(--navy);margin-bottom:6px;line-height:1.3;letter-spacing:-.3px}
+.svc-body h3{font-size:.95rem;font-weight:800;color:var(--navy);margin-bottom:6px;line-height:1.3;letter-spacing:-.3px;transition:color .3s}
+.svc:hover .svc-body h3{color:var(--navy2)}
 .svc-body p{font-size:.8rem;color:var(--body);line-height:1.65;margin-bottom:14px;min-height:2.5em}
 .svc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
 .svc-tag{padding:4px 10px;font-size:.65rem;font-weight:700;color:var(--navy);background:var(--bg);border:1px solid var(--line);border-radius:20px;letter-spacing:.2px;transition:.3s}
@@ -151,7 +187,8 @@ section{padding:100px 0;position:relative}
 .hw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative}
 .hw-grid::before{content:'';position:absolute;top:40px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,var(--line),var(--gold),var(--line));opacity:.4}
 .hw-step{text-align:center;padding:0 12px;position:relative;z-index:1;min-width:0}
-.hw-num{width:48px;height:48px;border-radius:50%;background:var(--navy);color:var(--gold);font-weight:800;font-size:1.1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;border:4px solid var(--white);box-shadow:0 0 0 2px var(--navy),var(--sh2)}
+.hw-num{width:48px;height:48px;border-radius:50%;background:var(--navy);color:var(--gold);font-weight:800;font-size:1.1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;border:4px solid var(--white);box-shadow:0 0 0 2px var(--navy),var(--sh2);transition:transform .4s,box-shadow .4s}
+.hw-step:hover .hw-num{transform:scale(1.12);box-shadow:0 0 0 2px var(--gold),0 8px 24px rgba(201,162,39,.2)}
 .hw-step h4{font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:4px;white-space:nowrap}
 .hw-step .hw-en{font-size:.65rem;color:var(--gold);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;display:block}
 .hw-step p{font-size:.82rem;color:var(--body);line-height:1.65}
@@ -173,8 +210,8 @@ section{padding:100px 0;position:relative}
 .al-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--goldG);transform:scaleY(0);transform-origin:top;transition:.5s}
 .al-card:hover{border-color:var(--goldB);box-shadow:var(--sh2);transform:translateY(-6px)}
 .al-card:hover::after{transform:scaleY(1)}
-.al-ic{width:56px;height:56px;min-width:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;background:var(--bg);border:1px solid var(--line);transition:.4s}
-.al-card:hover .al-ic{background:var(--navy);border-color:var(--navy);box-shadow:var(--sh2)}
+.al-ic{width:56px;height:56px;min-width:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;background:var(--bg);border:1px solid var(--line);transition:all .4s cubic-bezier(.25,.46,.45,.94)}
+.al-card:hover .al-ic{background:var(--navy);border-color:var(--navy);box-shadow:0 8px 24px rgba(12,20,37,.15);transform:scale(1.08)}
 .al-info{flex:1}
 .al-card h4{font-size:1.05rem;font-weight:800;color:var(--navy);margin-bottom:2px}
 .al-en{font-size:.68rem;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:10px;display:block}
@@ -233,7 +270,8 @@ section{padding:100px 0;position:relative}
 .mhl{padding:18px 20px;background:var(--goldP);border:1px solid var(--goldB);border-radius:var(--r);margin:14px 0}.mhl p{font-size:.85rem;color:var(--navy);line-height:1.65;font-weight:500}.mhl strong{color:var(--gold)}
 
 /* ═══ FOOTER ═══ */
-footer{background:var(--navy);color:#fff;padding:72px 0 32px;width:100%}
+footer{background:var(--navy);color:#fff;padding:72px 0 32px;width:100%;position:relative;overflow:hidden}
+footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,162,39,.3),transparent)}
 
 /* Footer 전체 너비 */
 footer .ct{max-width:100%;padding:0 80px}
@@ -298,8 +336,8 @@ footer .ft-top{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:40px}
 .stool-sub{font-size:1rem;color:rgba(255,255,255,.55);line-height:1.8;margin-bottom:48px;max-width:640px;margin-left:auto;margin-right:auto}
 .stool-sub strong{color:var(--gold);font-weight:700}
 .stool-features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:48px}
-.stool-feat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:28px 20px;text-align:center;transition:.4s}
-.stool-feat:hover{background:rgba(201,162,39,.08);border-color:rgba(201,162,39,.25);transform:translateY(-6px)}
+.stool-feat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:28px 20px;text-align:center;transition:all .5s cubic-bezier(.25,.46,.45,.94)}
+.stool-feat:hover{background:rgba(201,162,39,.08);border-color:rgba(201,162,39,.25);transform:translateY(-6px);box-shadow:0 16px 40px rgba(201,162,39,.1)}
 .stool-feat-icon{width:56px;height:56px;border-radius:14px;background:rgba(201,162,39,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem}
 .stool-feat h4{font-size:.92rem;font-weight:700;color:#fff;margin-bottom:6px}
 .stool-feat p{font-size:.78rem;color:rgba(255,255,255,.45);line-height:1.6}
@@ -370,10 +408,10 @@ footer .ft-top{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:40px}
 <section class="hero">
 <div class="ct"><div class="h-grid">
   <div class="h-left">
-    <div class="h-tag rv on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>창업 · 운영 · 매각, 올인원 플랫폼</div>
-    <h1 class="rv on">창업부터 매각까지<br><em>여기서 다 됩니다</em></h1>
-    <p class="h-sub rv on">본사 구축, 상권 분석, 세무, 인테리어, IT 장비 — 따로 알아볼 필요 없습니다. 고민만 말하면 각 분야 전문가가 즉시 움직입니다.</p>
-    <div class="h-btns rv on">
+    <div class="h-tag rv on stg-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>창업 · 운영 · 매각, 올인원 플랫폼</div>
+    <h1 class="rv on stg-2">창업부터 매각까지<br><em>여기서 다 됩니다</em></h1>
+    <p class="h-sub rv on stg-3">본사 구축, 상권 분석, 세무, 인테리어, IT 장비 — 따로 알아볼 필요 없습니다. 고민만 말하면 각 분야 전문가가 즉시 움직입니다.</p>
+    <div class="h-btns rv on stg-4">
       <div class="h-bw">
         <a href="#" class="btn-p" onclick="toggleFloatForm(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>30초 무료 상담 신청</a>
         <span class="btn-sm">빠른 전문가 배정 · 맞춤 상담</span>
@@ -383,7 +421,7 @@ footer .ft-top{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:40px}
         <span class="btn-sm">비밀 보장 · 간단한 질문 OK</span>
       </div>
     </div>
-    <div class="h-trust rv on">
+    <div class="h-trust rv on stg-5">
       <div class="h-ti"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>10분 내 배정</div>
       <div class="h-ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>비밀 보장</div>
       <div class="h-ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>상담비 0원</div>
@@ -420,10 +458,10 @@ footer .ft-top{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:40px}
 <!-- STATS -->
 <div class="stats">
 <div class="ct"><div class="st-grid">
-  <div class="st-item rv"><div class="st-num" data-t="320">0<span>+</span></div><div class="st-label">누적 프로젝트</div></div>
-  <div class="st-item rv"><div class="st-num" data-t="97">0<span>%</span></div><div class="st-label">고객 만족도</div></div>
-  <div class="st-item rv"><div class="st-num" data-t="46">0<span>+</span></div><div class="st-label">파트너 브랜드</div></div>
-  <div class="st-item rv"><div class="st-num" data-t="15">0<span>명</span></div><div class="st-label">전담 전문가</div></div>
+  <div class="st-item rv stg-1"><div class="st-num" data-t="320">0<span>+</span></div><div class="st-label">누적 프로젝트</div></div>
+  <div class="st-item rv stg-2"><div class="st-num" data-t="97">0<span>%</span></div><div class="st-label">고객 만족도</div></div>
+  <div class="st-item rv stg-3"><div class="st-num" data-t="46">0<span>+</span></div><div class="st-label">파트너 브랜드</div></div>
+  <div class="st-item rv stg-4"><div class="st-num" data-t="15">0<span>명</span></div><div class="st-label">전담 전문가</div></div>
 </div></div>
 </div>
 
@@ -435,17 +473,17 @@ footer .ft-top{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:40px}
     <h2><em>감(Feeling)</em>으로 창업하지 마십시오.<br>숫자로 검증하십시오.</h2>
     <p class="stool-sub">파운더원 수석 팀이 사용하는 <strong>[2026 실전 수익 시뮬레이터]</strong>를<br>무료로 배포합니다.</p>
     <div class="stool-features">
-      <div class="stool-feat">
+      <div class="stool-feat rv stg-1">
         <div class="stool-feat-icon">📊</div>
         <h4>자동 BEP 계산</h4>
         <p>월 고정비·변동비 입력만으로<br>손익분기점 자동 산출</p>
       </div>
-      <div class="stool-feat">
+      <div class="stool-feat rv stg-3">
         <div class="stool-feat-icon">🧮</div>
         <h4>세금 / 이자 역산</h4>
         <p>법인세·소득세·대출이자를<br>실전 공식으로 역계산</p>
       </div>
-      <div class="stool-feat">
+      <div class="stool-feat rv stg-5">
         <div class="stool-feat-icon">📈</div>
         <h4>3가지 시나리오 분석</h4>
         <p>보수적·기본·낙관적<br>3-Track 수익 시뮬레이션</p>
@@ -669,11 +707,12 @@ footer .ft-top{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:40px}
 <div class="mo" id="mo"><div class="modal"><div class="mhd" id="mH"></div><div class="mx fc" onclick="cM()">✕</div><div class="mbd" id="mB"></div></div></div>
 
 <!-- FINAL CTA -->
-<section style="padding:80px 0;background:var(--white);text-align:center">
-<div class="ct">
-  <div class="s-tag" style="justify-content:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Contact</div>
-  <h2 class="s-title" style="margin-bottom:12px">아직 고민 중이신가요?</h2>
-  <p style="font-size:1rem;color:var(--body);margin-bottom:36px;line-height:1.8">이름과 연락처만 남기면, 24시간 내 담당 전문가가 직접 연락드립니다.<br>상담비는 0원입니다.</p>
+<section style="padding:80px 0;background:var(--white);text-align:center;position:relative;overflow:hidden">
+<div style="position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(201,162,39,.03) 0%,transparent 70%);border-radius:50%;pointer-events:none"></div>
+<div class="ct" style="position:relative;z-index:1">
+  <div class="s-tag rv" style="justify-content:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Contact</div>
+  <h2 class="s-title rv stg-1" style="margin-bottom:12px">아직 고민 중이신가요?</h2>
+  <p class="rv stg-2" style="font-size:1rem;color:var(--body);margin-bottom:36px;line-height:1.8">이름과 연락처만 남기면, 24시간 내 담당 전문가가 직접 연락드립니다.<br>상담비는 0원입니다.</p>
   <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
     <a href="#" class="btn-p" onclick="toggleFloatForm(event)" style="font-size:1rem;padding:18px 44px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>30초 무료 상담 신청</a>
     <a href="https://open.kakao.com/" target="_blank" rel="noopener" class="btn-kk" style="font-size:1rem;padding:18px 40px"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.48 3 2 6.58 2 10.94c0 2.8 1.86 5.27 4.66 6.68-.15.56-.96 3.58-1 3.74 0 0-.02.09.03.12.06.04.12.02.12.02.16-.02 4.12-2.72 4.76-3.17.46.06.93.1 1.43.1 5.52 0 10-3.58 10-7.94S17.52 3 12 3z"/></svg>카카오톡 1:1 상담</a>
@@ -735,18 +774,23 @@ const bg=document.getElementById('burger'),mm=document.getElementById('mobm');
 bg.addEventListener('click',()=>{bg.classList.toggle('on');mm.classList.toggle('on')});
 function cMob(){bg.classList.remove('on');mm.classList.remove('on')}
 
-// Reveal with stagger
+// Reveal with stagger — enhanced with multi-direction support
 const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target)}})},{threshold:.06});
-document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+document.querySelectorAll('.rv,.rv-left,.rv-right,.rv-scale,.sec-divider,.glow-line,.text-highlight').forEach(el=>ro.observe(el));
 // Fallback: 1.5초 후 모든 요소 강제 표시 (모바일 안전장치)
-setTimeout(()=>{document.querySelectorAll('.rv:not(.on)').forEach(el=>el.classList.add('on'))},1500);
-document.querySelectorAll('.svc-grid .svc').forEach((el,i)=>{el.style.animationDelay=(.08*i)+'s'});
-document.querySelectorAll('.al-grid .al-card').forEach((el,i)=>{el.style.animationDelay=(.1*i)+'s'});
-document.querySelectorAll('.hw-grid .hw-step').forEach((el,i)=>{el.style.animationDelay=(.12*i)+'s'});
+setTimeout(()=>{document.querySelectorAll('.rv:not(.on),.rv-left:not(.on),.rv-right:not(.on),.rv-scale:not(.on)').forEach(el=>el.classList.add('on'))},1500);
+// Stagger delays for service cards
+document.querySelectorAll('.svc-grid .svc').forEach((el,i)=>{el.style.transitionDelay=(.06*i)+'s'});
+document.querySelectorAll('.al-grid .al-card').forEach((el,i)=>{el.style.transitionDelay=(.08*i)+'s'});
+document.querySelectorAll('.hw-grid .hw-step').forEach((el,i)=>{el.style.transitionDelay=(.1*i)+'s'});
 
-// Counter
-const co=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const el=e.target,t=+el.dataset.t,suf=el.querySelector('span').outerHTML;let c=0;const iv=setInterval(()=>{c+=Math.ceil(t/40);if(c>=t){c=t;clearInterval(iv)}el.innerHTML=c+suf},30);co.unobserve(el)}})},{threshold:.5});
+// Counter — enhanced with easing and completion bounce
+const co=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const el=e.target,t=+el.dataset.t,suf=el.querySelector('span').outerHTML;let c=0;const dur=1200,start=performance.now();function animate(now){const p=Math.min((now-start)/dur,1);const eased=1-Math.pow(1-p,3);c=Math.round(eased*t);el.innerHTML=c+suf;if(p<1)requestAnimationFrame(animate);else{el.innerHTML=t+suf;el.classList.add('counted')}}requestAnimationFrame(animate);co.unobserve(el)}})},{threshold:.5});
 document.querySelectorAll('[data-t]').forEach(el=>co.observe(el));
+
+// Smooth parallax for hero decorations
+let ticking=false;
+window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(()=>{const sy=window.scrollY;const heroCards=document.querySelectorAll('.h-card');heroCards.forEach((c,i)=>{const sp=.02+i*.008;c.style.transform='translateY('+(-sy*sp)+'px)'});ticking=false});ticking=true}});
 
 
 // ═══ HOW IT WORKS 접기/펴기 ═══

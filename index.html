@@ -987,6 +987,51 @@ async function sendAiMsg(){
 .ai-chip{padding:6px 12px;background:var(--goldP);color:var(--gold);border:1px solid var(--goldB);border-radius:50px;font-size:.72rem;font-weight:600;cursor:pointer;transition:.2s}
 .ai-chip:hover{background:var(--goldB)}
 @media(max-width:480px){.ai-panel{right:10px;left:10px;width:auto;bottom:160px}}
+
+/* ═══ ADMIN CMS PANEL ═══ */
+.admin-overlay{position:fixed;inset:0;background:rgba(10,15,28,.85);backdrop-filter:blur(12px);z-index:20000;display:none;overflow-y:auto;padding:20px}
+.admin-overlay.open{display:block}
+.admin-wrap{max-width:960px;margin:0 auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.3)}
+.admin-hd{padding:24px 32px;background:linear-gradient(135deg,#0c1425,#1a2540);color:#fff;display:flex;justify-content:space-between;align-items:center}
+.admin-hd h2{font-size:1.3rem;font-weight:800;display:flex;align-items:center;gap:10px}
+.admin-hd h2 span{color:var(--gold)}
+.admin-close{color:rgba(255,255,255,.6);cursor:pointer;font-size:24px;padding:6px 10px;border-radius:8px;transition:.2s;background:none;border:none}.admin-close:hover{color:#fff;background:rgba(255,255,255,.1)}
+.admin-tabs{display:flex;gap:0;border-bottom:2px solid var(--line);background:#fafbfc}
+.admin-tab{flex:1;padding:14px 20px;font-size:.82rem;font-weight:700;color:var(--sub);cursor:pointer;text-align:center;border:none;background:none;transition:.3s;position:relative;font-family:inherit}
+.admin-tab.active{color:var(--navy);background:#fff}
+.admin-tab.active::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:var(--goldG)}
+.admin-tab:hover{color:var(--navy);background:#fff}
+.admin-body{padding:28px 32px;min-height:400px}
+.admin-section{display:none}.admin-section.active{display:block}
+.adm-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.adm-full{margin-bottom:14px}
+.adm-label{display:block;font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:5px;letter-spacing:.3px}
+.adm-input{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:.88rem;font-family:inherit;transition:.2s}
+.adm-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--goldP)}
+.adm-textarea{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:.85rem;font-family:inherit;min-height:80px;resize:vertical;transition:.2s}
+.adm-textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--goldP)}
+.adm-btn{padding:10px 24px;border-radius:10px;font-weight:700;font-size:.82rem;cursor:pointer;transition:.3s;border:none;font-family:inherit}
+.adm-btn-primary{background:var(--navy);color:#fff}.adm-btn-primary:hover{background:var(--navy2);transform:translateY(-2px)}
+.adm-btn-gold{background:var(--goldG);color:var(--navy);font-weight:800}.adm-btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,162,39,.3)}
+.adm-btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}.adm-btn-danger:hover{background:#dc2626;color:#fff}
+.adm-btn-secondary{background:var(--bg);color:var(--navy);border:1px solid var(--line)}.adm-btn-secondary:hover{border-color:var(--gold)}
+.adm-card{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;position:relative;transition:.3s}
+.adm-card:hover{border-color:var(--goldB);box-shadow:var(--sh1)}
+.adm-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.adm-card-head h4{font-size:.9rem;font-weight:700;color:var(--navy)}
+.adm-card-actions{display:flex;gap:6px}
+.adm-img-search{display:flex;gap:8px;margin-bottom:14px}
+.adm-img-search input{flex:1}
+.adm-img-results{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.adm-img-results img{width:100%;height:100px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:.2s}
+.adm-img-results img:hover,.adm-img-results img.selected{border-color:var(--gold);box-shadow:0 4px 12px rgba(201,162,39,.3)}
+.adm-preview{width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:10px;border:1px solid var(--line)}
+.adm-tag-input{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.adm-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:var(--goldP);color:var(--navy);border:1px solid var(--goldB);border-radius:20px;font-size:.72rem;font-weight:600}
+.adm-tag .tag-x{cursor:pointer;font-weight:800;color:var(--sub);margin-left:2px}.adm-tag .tag-x:hover{color:#dc2626}
+.admin-indicator{position:fixed;top:10px;left:50%;transform:translateX(-50%);padding:6px 18px;background:var(--goldG);color:var(--navy);font-size:.72rem;font-weight:800;border-radius:50px;z-index:19999;display:none;cursor:pointer;box-shadow:0 4px 16px rgba(201,162,39,.3)}
+.admin-indicator.on{display:flex;align-items:center;gap:6px}
+@media(max-width:768px){.admin-overlay{padding:10px}.admin-body{padding:20px 16px}.adm-row{grid-template-columns:1fr}.adm-img-results{grid-template-columns:repeat(2,1fr)}}
 </style>
 
 <div class="ai-fab" onclick="toggleAiChat()">
@@ -1012,7 +1057,504 @@ async function sendAiMsg(){
   </div>
 </div>
 
-</body>
-</html>
+<!-- ADMIN INDICATOR BAR -->
+<div class="admin-indicator" id="adminBar" onclick="openAdmin()">⚙️ 관리자 모드 <span style="font-weight:400;opacity:.7">| 클릭하여 편집</span></div>
+
+<!-- ADMIN CMS OVERLAY -->
+<div class="admin-overlay" id="adminOverlay">
+<div class="admin-wrap">
+  <div class="admin-hd">
+    <h2>⚙️ <span>관리자</span> 패널</h2>
+    <button class="admin-close" onclick="closeAdmin()">✕</button>
+  </div>
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="admTab(this,'tabSvc')">📦 서비스 관리</button>
+    <button class="admin-tab" onclick="admTab(this,'tabMenu')">🧭 메뉴 관리</button>
+    <button class="admin-tab" onclick="admTab(this,'tabImg')">🖼️ 이미지 검색</button>
+    <button class="admin-tab" onclick="admTab(this,'tabSettings')">⚙️ 설정</button>
+  </div>
+  <div class="admin-body">
+    <!-- TAB: 서비스 관리 -->
+    <div class="admin-section active" id="tabSvc">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <h3 style="font-size:1rem;font-weight:800;color:var(--navy)">서비스 카드 관리</h3>
+        <button class="adm-btn adm-btn-gold" onclick="addNewSvc()">+ 새 서비스 추가</button>
+      </div>
+      <div id="admSvcList"></div>
+    </div>
+    <!-- TAB: 메뉴 관리 -->
+    <div class="admin-section" id="tabMenu">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <h3 style="font-size:1rem;font-weight:800;color:var(--navy)">내비게이션 메뉴</h3>
+        <button class="adm-btn adm-btn-gold" onclick="addNewMenu()">+ 메뉴 추가</button>
+      </div>
+      <div id="admMenuList"></div>
+      <hr style="margin:28px 0;border:none;border-top:1px solid var(--line)">
+      <h3 style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:14px">푸터 링크</h3>
+      <div id="admFooterList"></div>
+      <button class="adm-btn adm-btn-secondary" onclick="addFooterLink()" style="margin-top:10px">+ 푸터 링크 추가</button>
+    </div>
+    <!-- TAB: 이미지 검색 -->
+    <div class="admin-section" id="tabImg">
+      <h3 style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:6px">AI 이미지 검색</h3>
+      <p style="font-size:.82rem;color:var(--sub);margin-bottom:16px">Unsplash / Pexels에서 무료 이미지를 검색하여 서비스 카드에 적용하세요.</p>
+      <div class="adm-row">
+        <div><label class="adm-label">Unsplash API Key</label><input class="adm-input" id="admUnsplashKey" placeholder="Access Key 입력"></div>
+        <div><label class="adm-label">Pexels API Key</label><input class="adm-input" id="admPexelsKey" placeholder="API Key 입력"></div>
+      </div>
+      <div class="adm-img-search">
+        <input class="adm-input" id="admImgQuery" placeholder="검색어 (예: franchise, restaurant, office...)" onkeydown="if(event.key==='Enter')searchStockImages()">
+        <button class="adm-btn adm-btn-primary" onclick="searchStockImages()">🔍 검색</button>
+      </div>
+      <div id="admImgResults" class="adm-img-results"></div>
+      <div id="admImgStatus" style="text-align:center;color:var(--sub);font-size:.82rem;padding:20px 0"></div>
+      <div style="margin-top:14px">
+        <label class="adm-label">적용할 서비스 선택</label>
+        <select class="adm-input" id="admImgTarget" style="max-width:300px"></select>
+        <button class="adm-btn adm-btn-gold" onclick="applySelectedImage()" style="margin-top:10px">선택한 이미지 적용</button>
+      </div>
+    </div>
+    <!-- TAB: 설정 -->
+    <div class="admin-section" id="tabSettings">
+      <h3 style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:16px">사이트 설정</h3>
+      <div class="adm-full"><label class="adm-label">사이트 제목</label><input class="adm-input" id="admSiteTitle" placeholder="파운더원 FOUNDER ONE"></div>
+      <div class="adm-full"><label class="adm-label">Hero 타이틀 (HTML 가능)</label><input class="adm-input" id="admHeroTitle" placeholder='창업부터 매각까지<br><em>여기서 다 됩니다</em>'></div>
+      <div class="adm-full"><label class="adm-label">Hero 설명</label><textarea class="adm-textarea" id="admHeroDesc" placeholder="본사 구축, 상권 분석..."></textarea></div>
+      <div class="adm-row">
+        <div><label class="adm-label">카카오톡 링크</label><input class="adm-input" id="admKakaoUrl" placeholder="https://open.kakao.com/..."></div>
+        <div><label class="adm-label">전화번호</label><input class="adm-input" id="admPhone" placeholder="010-0000-0000"></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:20px">
+        <button class="adm-btn adm-btn-primary" onclick="saveSettings()">💾 설정 저장</button>
+        <button class="adm-btn adm-btn-danger" onclick="if(confirm('모든 커스터마이징을 초기화하시겠습니까?')){localStorage.removeItem('f1_cms');location.reload()}">🗑️ 전체 초기화</button>
+        <button class="adm-btn adm-btn-secondary" onclick="exportCMS()">📤 내보내기</button>
+        <label class="adm-btn adm-btn-secondary" style="display:inline-flex;align-items:center;gap:4px;cursor:pointer">📥 가져오기<input type="file" accept=".json" onchange="importCMS(event)" style="display:none"></label>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// ═══════════════════════════════════
+//   ADMIN CMS — localStorage 기반
+// ═══════════════════════════════════
+
+// 기본 서비스 데이터 (HTML에 하드코딩된 9개 서비스)
+const DEFAULT_SVCS=[
+  {id:'hq',title:'프랜차이즈 본사 구축',desc:'브랜드 기획부터 정보공개서 등록까지, 가맹 가능한 본사를 만듭니다.',tags:['BI/CI','정보공개서','SV 매뉴얼'],img:'01_hq.png',emoji:'🏢',modalKey:'hq'},
+  {id:'sales',title:'가맹 영업 대행',desc:'전국 지사망과 창업자 DB로 가맹점 확장을 대행합니다.',tags:['DB 매칭','설명회 IR','계약 지원'],img:'02_sales.png',emoji:'📈',modalKey:'sales'},
+  {id:'leasing',title:'임대 대행 (Leasing)',desc:'렌트프리 · TI 확보 — 임차인 편에서 건물주와 협상합니다.',tags:['Rent-free','TI 협상','권리 분석'],img:'03_leasing.png',emoji:'🏠',modalKey:'leasing'},
+  {id:'consulting',title:'창업 컨설팅 · 상권 분석',desc:'빅데이터 실매출 팩트체크로 "진짜 돈 되는 브랜드"만 검증합니다.',tags:['빅데이터','실매출 검증','Go/No-Go'],img:'04_consulting.png',emoji:'🔍',modalKey:'consulting'},
+  {id:'transfer',title:'양도양수 · 권리금 협상',desc:'POS 3년치 교차 검증, 적정 권리금 산출, 안전한 계약 체결.',tags:['POS 검증','권리금 산출','특약 설계'],img:'05_transfer.png',emoji:'🤝',modalKey:'transfer'},
+  {id:'tax',title:'세무 절세 전략',desc:'청년감면 · 의제매입 · 고용증대 공제 — 놓치기 쉬운 절세를 챙깁니다.',tags:['청년감면','의제매입','법인 전환'],img:'06_tax.png',emoji:'🧾',modalKey:'tax'},
+  {id:'lease',title:'리스 · 렌탈 · 금융 설계',desc:'시설비 최대 80%를 리스로 전환. 월 납부로 부담을 줄이세요.',tags:['금융 리스','운용 리스','비용 처리'],img:'07_lease.png',emoji:'💳',modalKey:'lease'},
+  {id:'interior',title:'인테리어 시공',desc:'프랜차이즈·개인브랜드·식당·카페·시설업 — 직영 시공 20~30% 절감.',tags:['직영 시공','프랜차이즈','카페·식당','시설업'],img:'08_interior.png',emoji:'🔧',modalKey:'interior'},
+  {id:'itEquip',title:'IT 장비',desc:'POS · 테이블오더 · 키오스크 · CCTV — 번들 패키지 최대 35% 할인.',tags:['POS','테이블오더','키오스크','CCTV'],img:'',emoji:'🖥️',modalKey:'itEquip'}
+];
+const DEFAULT_MENUS=[
+  {label:'서비스',href:'#services'},
+  {label:'이용방법',href:'#process'},
+  {label:'전문가',href:'#experts'},
+  {label:'상담',href:'#',onclick:'toggleFloatForm(event)'}
+];
+
+let CMS=null;
+let adminMode=false;
+let selectedImgUrl='';
+
+function getCMS(){
+  if(CMS)return CMS;
+  try{
+    const saved=localStorage.getItem('f1_cms');
+    if(saved)CMS=JSON.parse(saved);
+  }catch(e){}
+  if(!CMS)CMS={services:JSON.parse(JSON.stringify(DEFAULT_SVCS)),menus:JSON.parse(JSON.stringify(DEFAULT_MENUS)),footerLinks:[],settings:{}};
+  return CMS;
+}
+function saveCMS(){
+  localStorage.setItem('f1_cms',JSON.stringify(getCMS()));
+}
+
+// ═══ Admin 모드 토글 (로고 3번 클릭) ═══
+let logoClicks=0;let logoTimer=null;
+document.querySelector('.logo').addEventListener('click',function(e){
+  e.preventDefault();
+  logoClicks++;
+  clearTimeout(logoTimer);
+  logoTimer=setTimeout(()=>{logoClicks=0},1500);
+  if(logoClicks>=3){logoClicks=0;toggleAdminMode();}
+});
+
+function toggleAdminMode(){
+  adminMode=!adminMode;
+  document.getElementById('adminBar').classList.toggle('on',adminMode);
+  if(adminMode){
+    renderCMSContent();
+  }else{
+    closeAdmin();
+  }
+}
+function openAdmin(){
+  document.getElementById('adminOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  renderAdminSvcList();
+  renderAdminMenuList();
+  renderAdminFooterList();
+  loadAdminSettings();
+  loadImgKeys();
+  populateImgTargets();
+}
+function closeAdmin(){
+  document.getElementById('adminOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function admTab(btn,tabId){
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+// ═══ 서비스 관리 ═══
+function renderAdminSvcList(){
+  const cms=getCMS();
+  const el=document.getElementById('admSvcList');
+  el.innerHTML=cms.services.map((s,i)=>`
+    <div class="adm-card">
+      <div class="adm-card-head">
+        <h4>${s.emoji||''} ${s.title}</h4>
+        <div class="adm-card-actions">
+          <button class="adm-btn adm-btn-secondary" onclick="editSvc(${i})" style="padding:6px 14px;font-size:.75rem">✏️ 편집</button>
+          <button class="adm-btn adm-btn-secondary" onclick="moveSvc(${i},-1)" style="padding:6px 10px;font-size:.75rem">↑</button>
+          <button class="adm-btn adm-btn-secondary" onclick="moveSvc(${i},1)" style="padding:6px 10px;font-size:.75rem">↓</button>
+          <button class="adm-btn adm-btn-danger" onclick="delSvc(${i})" style="padding:6px 14px;font-size:.75rem">🗑️</button>
+        </div>
+      </div>
+      <p style="font-size:.8rem;color:var(--body)">${s.desc}</p>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:8px">${s.tags.map(t=>'<span class="adm-tag">'+t+'</span>').join('')}</div>
+      ${s.img?'<div style="margin-top:8px"><img src="'+s.img+'" style="height:60px;border-radius:6px;object-fit:cover" onerror="this.style.display=\'none\'"></div>':''}
+    </div>
+  `).join('');
+}
+
+function addNewSvc(){
+  const cms=getCMS();
+  const id='custom_'+Date.now();
+  cms.services.push({id,title:'새 서비스',desc:'서비스 설명을 입력하세요.',tags:['태그1'],img:'',emoji:'📌',modalKey:id});
+  saveCMS();renderAdminSvcList();renderCMSContent();
+  editSvc(cms.services.length-1);
+}
+function editSvc(idx){
+  const cms=getCMS();
+  const s=cms.services[idx];
+  if(!s)return;
+  const el=document.getElementById('admSvcList');
+  const cards=el.querySelectorAll('.adm-card');
+  if(!cards[idx])return;
+  cards[idx].innerHTML=`
+    <div class="adm-row"><div><label class="adm-label">서비스명</label><input class="adm-input" id="es_title" value="${esc(s.title)}"></div><div><label class="adm-label">이모지</label><input class="adm-input" id="es_emoji" value="${esc(s.emoji)}" style="max-width:80px"></div></div>
+    <div class="adm-full"><label class="adm-label">설명</label><textarea class="adm-textarea" id="es_desc">${esc(s.desc)}</textarea></div>
+    <div class="adm-full"><label class="adm-label">태그 (쉼표로 구분)</label><input class="adm-input" id="es_tags" value="${s.tags.join(', ')}"></div>
+    <div class="adm-full"><label class="adm-label">이미지 URL (또는 파일명)</label><input class="adm-input" id="es_img" value="${esc(s.img||'')}"></div>
+    ${s.img?'<img src="'+s.img+'" class="adm-preview" onerror="this.style.display=\'none\'">':''}
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="adm-btn adm-btn-primary" onclick="saveSvcEdit(${idx})">💾 저장</button>
+      <button class="adm-btn adm-btn-secondary" onclick="renderAdminSvcList()">취소</button>
+    </div>
+  `;
+}
+function saveSvcEdit(idx){
+  const cms=getCMS();
+  const s=cms.services[idx];
+  s.title=document.getElementById('es_title').value.trim()||s.title;
+  s.emoji=document.getElementById('es_emoji').value.trim();
+  s.desc=document.getElementById('es_desc').value.trim();
+  s.tags=document.getElementById('es_tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  s.img=document.getElementById('es_img').value.trim();
+  saveCMS();renderAdminSvcList();renderCMSContent();
+}
+function delSvc(idx){
+  if(!confirm('이 서비스를 삭제하시겠습니까?'))return;
+  const cms=getCMS();
+  cms.services.splice(idx,1);
+  saveCMS();renderAdminSvcList();renderCMSContent();
+}
+function moveSvc(idx,dir){
+  const cms=getCMS();
+  const to=idx+dir;
+  if(to<0||to>=cms.services.length)return;
+  [cms.services[idx],cms.services[to]]=[cms.services[to],cms.services[idx]];
+  saveCMS();renderAdminSvcList();renderCMSContent();
+}
+
+// ═══ 메뉴 관리 ═══
+function renderAdminMenuList(){
+  const cms=getCMS();
+  const el=document.getElementById('admMenuList');
+  el.innerHTML=cms.menus.map((m,i)=>`
+    <div class="adm-card" style="display:flex;align-items:center;gap:14px;padding:12px 16px">
+      <span style="font-weight:700;color:var(--navy);min-width:80px">${esc(m.label)}</span>
+      <span style="font-size:.78rem;color:var(--sub);flex:1">${esc(m.href)}</span>
+      <button class="adm-btn adm-btn-secondary" onclick="editMenu(${i})" style="padding:5px 12px;font-size:.72rem">✏️</button>
+      <button class="adm-btn adm-btn-secondary" onclick="moveMenu(${i},-1)" style="padding:5px 8px;font-size:.72rem">↑</button>
+      <button class="adm-btn adm-btn-secondary" onclick="moveMenu(${i},1)" style="padding:5px 8px;font-size:.72rem">↓</button>
+      <button class="adm-btn adm-btn-danger" onclick="delMenu(${i})" style="padding:5px 12px;font-size:.72rem">🗑️</button>
+    </div>
+  `).join('');
+}
+function addNewMenu(){
+  const cms=getCMS();
+  cms.menus.push({label:'새 메뉴',href:'#'});
+  saveCMS();renderAdminMenuList();renderCMSContent();
+}
+function editMenu(idx){
+  const cms=getCMS();
+  const m=cms.menus[idx];
+  const el=document.getElementById('admMenuList').children[idx];
+  el.innerHTML=`
+    <div style="display:flex;gap:8px;align-items:center;width:100%">
+      <input class="adm-input" id="em_label" value="${esc(m.label)}" style="width:120px" placeholder="메뉴명">
+      <input class="adm-input" id="em_href" value="${esc(m.href)}" style="flex:1" placeholder="링크 (#services, /page 등)">
+      <button class="adm-btn adm-btn-primary" onclick="saveMenuEdit(${idx})" style="padding:8px 16px;font-size:.75rem">저장</button>
+      <button class="adm-btn adm-btn-secondary" onclick="renderAdminMenuList()" style="padding:8px 12px;font-size:.75rem">취소</button>
+    </div>
+  `;
+}
+function saveMenuEdit(idx){
+  const cms=getCMS();
+  cms.menus[idx].label=document.getElementById('em_label').value.trim();
+  cms.menus[idx].href=document.getElementById('em_href').value.trim()||'#';
+  saveCMS();renderAdminMenuList();renderCMSContent();
+}
+function delMenu(idx){
+  if(!confirm('이 메뉴를 삭제하시겠습니까?'))return;
+  const cms=getCMS();cms.menus.splice(idx,1);
+  saveCMS();renderAdminMenuList();renderCMSContent();
+}
+function moveMenu(idx,dir){
+  const cms=getCMS();const to=idx+dir;
+  if(to<0||to>=cms.menus.length)return;
+  [cms.menus[idx],cms.menus[to]]=[cms.menus[to],cms.menus[idx]];
+  saveCMS();renderAdminMenuList();renderCMSContent();
+}
+
+// ═══ 푸터 링크 관리 ═══
+function renderAdminFooterList(){
+  const cms=getCMS();
+  const el=document.getElementById('admFooterList');
+  if(!cms.footerLinks||!cms.footerLinks.length){
+    el.innerHTML='<p style="font-size:.82rem;color:var(--sub)">추가된 푸터 링크가 없습니다.</p>';return;
+  }
+  el.innerHTML=cms.footerLinks.map((f,i)=>`
+    <div class="adm-card" style="display:flex;align-items:center;gap:10px;padding:10px 14px">
+      <span style="font-weight:600;min-width:80px">${esc(f.label)}</span>
+      <span style="font-size:.78rem;color:var(--sub);flex:1">${esc(f.href)}</span>
+      <button class="adm-btn adm-btn-danger" onclick="delFooter(${i})" style="padding:4px 10px;font-size:.7rem">🗑️</button>
+    </div>
+  `).join('');
+}
+function addFooterLink(){
+  const cms=getCMS();
+  if(!cms.footerLinks)cms.footerLinks=[];
+  const label=prompt('푸터 링크명:');if(!label)return;
+  const href=prompt('URL:','#');if(!href)return;
+  cms.footerLinks.push({label,href});
+  saveCMS();renderAdminFooterList();
+}
+function delFooter(idx){
+  const cms=getCMS();cms.footerLinks.splice(idx,1);
+  saveCMS();renderAdminFooterList();
+}
+
+// ═══ 설정 ═══
+function loadAdminSettings(){
+  const cms=getCMS();
+  const s=cms.settings||{};
+  document.getElementById('admSiteTitle').value=s.siteTitle||'';
+  document.getElementById('admHeroTitle').value=s.heroTitle||'';
+  document.getElementById('admHeroDesc').value=s.heroDesc||'';
+  document.getElementById('admKakaoUrl').value=s.kakaoUrl||'';
+  document.getElementById('admPhone').value=s.phone||'';
+}
+function saveSettings(){
+  const cms=getCMS();
+  cms.settings={
+    siteTitle:document.getElementById('admSiteTitle').value.trim(),
+    heroTitle:document.getElementById('admHeroTitle').value.trim(),
+    heroDesc:document.getElementById('admHeroDesc').value.trim(),
+    kakaoUrl:document.getElementById('admKakaoUrl').value.trim(),
+    phone:document.getElementById('admPhone').value.trim()
+  };
+  saveCMS();renderCMSContent();
+  alert('설정이 저장되었습니다!');
+}
+
+// ═══ 이미지 검색 (Unsplash + Pexels) ═══
+function loadImgKeys(){
+  const cms=getCMS();
+  document.getElementById('admUnsplashKey').value=cms.unsplashKey||'';
+  document.getElementById('admPexelsKey').value=cms.pexelsKey||'';
+}
+function saveImgKeys(){
+  const cms=getCMS();
+  cms.unsplashKey=document.getElementById('admUnsplashKey').value.trim();
+  cms.pexelsKey=document.getElementById('admPexelsKey').value.trim();
+  saveCMS();
+}
+function populateImgTargets(){
+  const cms=getCMS();
+  const sel=document.getElementById('admImgTarget');
+  sel.innerHTML=cms.services.map((s,i)=>`<option value="${i}">${s.emoji} ${s.title}</option>`).join('');
+}
+
+async function searchStockImages(){
+  saveImgKeys();
+  const q=document.getElementById('admImgQuery').value.trim();
+  if(!q){alert('검색어를 입력하세요');return;}
+  const uKey=document.getElementById('admUnsplashKey').value.trim();
+  const pKey=document.getElementById('admPexelsKey').value.trim();
+  const results=document.getElementById('admImgResults');
+  const status=document.getElementById('admImgStatus');
+  results.innerHTML='';status.textContent='🔍 검색 중...';selectedImgUrl='';
+  let imgs=[];
+
+  // Unsplash
+  if(uKey){
+    try{
+      const r=await fetch('https://api.unsplash.com/search/photos?query='+encodeURIComponent(q)+'&per_page=6&orientation=landscape',{headers:{'Authorization':'Client-ID '+uKey}});
+      const d=await r.json();
+      if(d.results)imgs.push(...d.results.map(x=>({url:x.urls.regular,thumb:x.urls.small,credit:'Unsplash: '+x.user.name,src:'unsplash'})));
+    }catch(e){console.error('Unsplash error:',e);}
+  }
+  // Pexels
+  if(pKey){
+    try{
+      const r=await fetch('https://api.pexels.com/v1/search?query='+encodeURIComponent(q)+'&per_page=6&orientation=landscape',{headers:{'Authorization':pKey}});
+      const d=await r.json();
+      if(d.photos)imgs.push(...d.photos.map(x=>({url:x.src.large,thumb:x.src.medium,credit:'Pexels: '+x.photographer,src:'pexels'})));
+    }catch(e){console.error('Pexels error:',e);}
+  }
+
+  if(!uKey&&!pKey){status.textContent='⚠️ API 키를 입력해주세요 (Unsplash 또는 Pexels)';return;}
+  if(imgs.length===0){status.textContent='검색 결과가 없습니다. 다른 검색어를 시도해보세요.';return;}
+  status.textContent=imgs.length+'개의 이미지를 찾았습니다. 클릭하여 선택하세요.';
+  results.innerHTML=imgs.map((img,i)=>`
+    <div style="position:relative">
+      <img src="${img.thumb}" data-url="${img.url}" onclick="selectStockImg(this,'${img.url}')" alt="${img.credit}">
+      <div style="position:absolute;bottom:4px;left:4px;right:4px;font-size:.6rem;color:#fff;background:rgba(0,0,0,.6);padding:2px 6px;border-radius:4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${img.credit}</div>
+    </div>
+  `).join('');
+}
+
+function selectStockImg(el,url){
+  document.querySelectorAll('#admImgResults img').forEach(i=>i.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedImgUrl=url;
+}
+function applySelectedImage(){
+  if(!selectedImgUrl){alert('이미지를 먼저 선택하세요');return;}
+  const idx=parseInt(document.getElementById('admImgTarget').value);
+  const cms=getCMS();
+  if(cms.services[idx]){
+    cms.services[idx].img=selectedImgUrl;
+    saveCMS();renderAdminSvcList();renderCMSContent();
+    alert('이미지가 적용되었습니다!');
+  }
+}
+
+// ═══ 내보내기/가져오기 ═══
+function exportCMS(){
+  const data=JSON.stringify(getCMS(),null,2);
+  const blob=new Blob([data],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='founderone-cms-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+}
+function importCMS(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      CMS=JSON.parse(ev.target.result);
+      saveCMS();renderCMSContent();renderAdminSvcList();renderAdminMenuList();
+      alert('가져오기 완료!');
+    }catch(err){alert('잘못된 파일입니다');}
+  };
+  reader.readAsText(file);
+}
+
+// ═══ CMS → 실제 페이지 렌더링 ═══
+function renderCMSContent(){
+  const cms=getCMS();
+
+  // 1. 서비스 카드 렌더링
+  const grid=document.querySelector('.svc-grid');
+  if(grid){
+    grid.innerHTML=cms.services.map(s=>{
+      const hasImg=s.img&&s.img.trim();
+      const visStyle=hasImg?'':'style="background:linear-gradient(135deg,#0c1425 0%,#1a2540 100%);display:flex;align-items:center;justify-content:center;border-radius:var(--r) var(--r) 0 0;min-height:180px"';
+      const visContent=hasImg?
+        `<img src="${s.img}" alt="${esc(s.title)}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=\\'font-size:3.5rem\\'>${s.emoji||'📌'}</span>';this.parentElement.style.cssText='background:linear-gradient(135deg,#0c1425,#1a2540);display:flex;align-items:center;justify-content:center;min-height:180px'">`:
+        `<span style="font-size:3.5rem;">${s.emoji||'📌'}</span>`;
+      return`<div class="svc rv on" onclick="oM('${s.modalKey||s.id}')">
+        <div class="svc-vis" ${visStyle}>${visContent}</div>
+        <div class="svc-body">
+          <h3>${esc(s.title)}</h3>
+          <p>${esc(s.desc)}</p>
+          <div class="svc-tags">${s.tags.map(t=>'<span class="svc-tag">'+esc(t)+'</span>').join('')}</div>
+          <div class="svc-link">자세히 보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // 2. 내비게이션 메뉴 렌더링
+  const nm=document.querySelector('.nm');
+  if(nm){
+    const menuLinks=cms.menus.map(m=>{
+      const oc=m.onclick?` onclick="${m.onclick}"`:'';
+      return`<a href="${esc(m.href)}" class="na"${oc}>${esc(m.label)}</a>`;
+    }).join('');
+    nm.innerHTML=menuLinks+`<a href="#" class="nb" onclick="toggleFloatForm(event)">무료 상담 신청</a>`;
+  }
+
+  // 3. 모바일 메뉴 렌더링
+  const mobm=document.getElementById('mobm');
+  if(mobm){
+    mobm.innerHTML=cms.menus.map(m=>{
+      const oc=m.onclick?`;${m.onclick}`:'';
+      return`<a href="${esc(m.href)}" onclick="cMob()${oc}">${esc(m.label)}</a>`;
+    }).join('')+`<a href="#" onclick="cMob();toggleFloatForm(event)">상담 신청</a>`;
+  }
+
+  // 4. 설정 적용
+  const s=cms.settings||{};
+  if(s.heroTitle){const h1=document.querySelector('.hero h1');if(h1)h1.innerHTML=s.heroTitle;}
+  if(s.heroDesc){const p=document.querySelector('.h-sub');if(p)p.textContent=s.heroDesc;}
+  if(s.siteTitle)document.title=s.siteTitle;
+
+  // 폼 체크박스도 동적으로 업데이트
+  const fChecks=document.querySelector('.fp-body .f-checks');
+  if(fChecks&&cms.services.length){
+    fChecks.innerHTML=cms.services.map(s=>`<label class="f-chk"><input type="checkbox" value="${s.id}">${s.emoji} ${esc(s.title)}</label>`).join('');
+  }
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ═══ 페이지 로드 시 CMS 적용 ═══
+(function(){
+  const saved=localStorage.getItem('f1_cms');
+  if(saved){
+    try{
+      CMS=JSON.parse(saved);
+      renderCMSContent();
+    }catch(e){}
+  }
+})();
+</script>
+
 </body>
 </html>

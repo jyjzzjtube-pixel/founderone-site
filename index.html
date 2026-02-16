@@ -887,17 +887,32 @@ function cM(){mo.classList.remove('on');document.body.style.overflow=''}
 mo.addEventListener('click',e=>{if(e.target===mo)cM()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')cM()});
 
-// Form — Netlify Forms 연동
+// Form — Netlify Forms 연동 + localStorage DB 저장
 function sF(e){
   e.preventDefault();
   const b=document.getElementById('subBtn');
   const fd=new FormData(e.target);
-  // 체크박스 서비스 수집
   const svcs=[];
   e.target.querySelectorAll('input[type="checkbox"]:checked').forEach(c=>svcs.push(c.value));
   fd.append('services',svcs.join(', '));
+  // localStorage DB에 상담 데이터 저장
+  const entry={
+    id:Date.now(),
+    name:fd.get('name')||e.target.querySelector('[type="text"]')?.value||'',
+    phone:fd.get('phone')||e.target.querySelector('[type="tel"]')?.value||'',
+    email:fd.get('email')||e.target.querySelector('[type="email"]')?.value||'',
+    budget:fd.get('budget')||e.target.querySelector('select')?.value||'',
+    services:svcs.join(', '),
+    status:'new',
+    memo:'',
+    createdAt:new Date().toISOString(),
+    source:window.location.href
+  };
+  const cms=getCMS();
+  if(!cms.consultDB)cms.consultDB=[];
+  cms.consultDB.unshift(entry);
+  saveCMS();
   b.textContent='전송 중...';b.disabled=true;
-  // Netlify form submission
   fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(fd).toString()})
   .then(()=>{b.textContent='✓ 신청 완료! 곧 연락드리겠습니다';b.style.background='#059669';setTimeout(()=>{b.textContent='무료 상담 신청하기';b.style.background='';b.disabled=false;e.target.reset()},4000)})
   .catch(()=>{b.textContent='✓ 신청 완료! 곧 연락드리겠습니다';b.style.background='#059669';b.disabled=false;setTimeout(()=>{b.textContent='무료 상담 신청하기';b.style.background='';e.target.reset()},4000)});
@@ -1068,9 +1083,11 @@ async function sendAiMsg(){
     <button class="admin-close" onclick="closeAdmin()">✕</button>
   </div>
   <div class="admin-tabs">
-    <button class="admin-tab active" onclick="admTab(this,'tabSvc')">📦 서비스 관리</button>
-    <button class="admin-tab" onclick="admTab(this,'tabMenu')">🧭 메뉴 관리</button>
-    <button class="admin-tab" onclick="admTab(this,'tabImg')">🖼️ 이미지 검색</button>
+    <button class="admin-tab active" onclick="admTab(this,'tabSvc')">📦 서비스</button>
+    <button class="admin-tab" onclick="admTab(this,'tabConsult')">📋 상담DB</button>
+    <button class="admin-tab" onclick="admTab(this,'tabExpert')">👥 전문가</button>
+    <button class="admin-tab" onclick="admTab(this,'tabImg')">🖼️ 이미지</button>
+    <button class="admin-tab" onclick="admTab(this,'tabMenu')">🧭 메뉴</button>
     <button class="admin-tab" onclick="admTab(this,'tabSettings')">⚙️ 설정</button>
   </div>
   <div class="admin-body">
@@ -1081,6 +1098,31 @@ async function sendAiMsg(){
         <button class="adm-btn adm-btn-gold" onclick="addNewSvc()">+ 새 서비스 추가</button>
       </div>
       <div id="admSvcList"></div>
+    </div>
+    <!-- TAB: 상담 DB 관리 -->
+    <div class="admin-section" id="tabConsult">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h3 style="font-size:1rem;font-weight:800;color:var(--navy)">📋 무료 상담 신청 DB</h3>
+        <div style="display:flex;gap:6px">
+          <button class="adm-btn adm-btn-secondary" onclick="exportConsultCSV()">📤 CSV 다운로드</button>
+          <button class="adm-btn adm-btn-danger" onclick="if(confirm('전체 상담 DB를 삭제하시겠습니까?')){getCMS().consultDB=[];saveCMS();renderConsultDB();}">🗑️ 전체 삭제</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <input class="adm-input" id="consultSearch" placeholder="이름, 연락처, 서비스로 검색..." oninput="renderConsultDB()" style="flex:1">
+        <select class="adm-input" id="consultFilter" onchange="renderConsultDB()" style="width:140px"><option value="">전체 상태</option><option value="new">🔴 신규</option><option value="contacted">🟡 연락완료</option><option value="meeting">🔵 미팅예정</option><option value="done">🟢 상담완료</option></select>
+      </div>
+      <div style="font-size:.78rem;color:var(--sub);margin-bottom:10px">총 <strong id="consultCount">0</strong>건</div>
+      <div id="consultList" style="max-height:500px;overflow-y:auto"></div>
+    </div>
+    <!-- TAB: 전문가 관리 -->
+    <div class="admin-section" id="tabExpert">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h3 style="font-size:1rem;font-weight:800;color:var(--navy)">👥 전문가 / 파트너사 관리</h3>
+        <button class="adm-btn adm-btn-gold" onclick="addNewExpert()">+ 전문가 추가</button>
+      </div>
+      <p style="font-size:.82rem;color:var(--sub);margin-bottom:16px">각 전문가/파트너사의 CI 이미지, 연혁, 레퍼런스를 관리합니다. 자세히보기 클릭 시 표시됩니다.</p>
+      <div id="expertList"></div>
     </div>
     <!-- TAB: 메뉴 관리 -->
     <div class="admin-section" id="tabMenu">
@@ -1113,6 +1155,14 @@ async function sendAiMsg(){
         <select class="adm-input" id="admImgTarget" style="max-width:300px"></select>
         <button class="adm-btn adm-btn-gold" onclick="applySelectedImage()" style="margin-top:10px">선택한 이미지 적용</button>
       </div>
+      <hr style="margin:28px 0;border:none;border-top:1px solid var(--line)">
+      <h3 style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:6px">🤖 Gemini AI 이미지 설명 생성</h3>
+      <p style="font-size:.82rem;color:var(--sub);margin-bottom:14px">AI가 서비스에 맞는 이미지 설명(프롬프트)을 생성합니다. 이를 Midjourney, DALL·E 등에 사용하세요.</p>
+      <div class="adm-img-search">
+        <input class="adm-input" id="admAiImgPrompt" placeholder="이미지 설명 요청 (예: 프랜차이즈 본사 사무실, 현대적 인테리어...)">
+        <button class="adm-btn adm-btn-primary" onclick="generateAiImageDesc()">🤖 AI 생성</button>
+      </div>
+      <div id="admAiImgResult" style="display:none;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:10px;font-size:.85rem;color:var(--body);line-height:1.7"></div>
     </div>
     <!-- TAB: 설정 -->
     <div class="admin-section" id="tabSettings">
@@ -1544,6 +1594,185 @@ function renderCMSContent(){
 
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
+// ═══ 상담 DB 관리 ═══
+function renderConsultDB(){
+  const cms=getCMS();
+  const db=cms.consultDB||[];
+  const q=(document.getElementById('consultSearch')?.value||'').toLowerCase();
+  const f=document.getElementById('consultFilter')?.value||'';
+  const filtered=db.filter(c=>{
+    if(f&&c.status!==f)return false;
+    if(q&&!(c.name||'').toLowerCase().includes(q)&&!(c.phone||'').includes(q)&&!(c.services||'').toLowerCase().includes(q)&&!(c.email||'').toLowerCase().includes(q))return false;
+    return true;
+  });
+  document.getElementById('consultCount').textContent=filtered.length;
+  const el=document.getElementById('consultList');
+  if(!filtered.length){el.innerHTML='<p style="text-align:center;color:var(--sub);padding:40px">상담 신청이 아직 없습니다.</p>';return;}
+  const statusMap={new:'🔴 신규',contacted:'🟡 연락완료',meeting:'🔵 미팅예정',done:'🟢 상담완료'};
+  el.innerHTML=filtered.map((c,i)=>{
+    const idx=db.indexOf(c);
+    return`<div class="adm-card" style="padding:14px 16px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div><strong style="font-size:.92rem">${esc(c.name||'이름없음')}</strong> <span style="font-size:.78rem;color:var(--sub)">${esc(c.phone||'')}</span></div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <select class="adm-input" style="width:110px;padding:4px 8px;font-size:.72rem" onchange="updateConsultStatus(${idx},this.value)">
+            <option value="new" ${c.status==='new'?'selected':''}>🔴 신규</option>
+            <option value="contacted" ${c.status==='contacted'?'selected':''}>🟡 연락완료</option>
+            <option value="meeting" ${c.status==='meeting'?'selected':''}>🔵 미팅예정</option>
+            <option value="done" ${c.status==='done'?'selected':''}>🟢 상담완료</option>
+          </select>
+          <button class="adm-btn adm-btn-danger" onclick="delConsult(${idx})" style="padding:4px 8px;font-size:.65rem">🗑️</button>
+        </div>
+      </div>
+      <div style="font-size:.78rem;color:var(--body);line-height:1.6">
+        ${c.email?'📧 '+esc(c.email)+' ':''} ${c.budget?'💰 '+esc(c.budget)+' ':''}
+        ${c.services?'<br>📦 '+esc(c.services):''}
+      </div>
+      <div style="margin-top:6px"><input class="adm-input" style="font-size:.78rem;padding:6px 10px" placeholder="메모 입력..." value="${esc(c.memo||'')}" onchange="updateConsultMemo(${idx},this.value)"></div>
+      <div style="font-size:.68rem;color:var(--faint);margin-top:4px">${c.createdAt?new Date(c.createdAt).toLocaleString('ko-KR'):''}</div>
+    </div>`;
+  }).join('');
+}
+function updateConsultStatus(idx,val){const cms=getCMS();if(cms.consultDB&&cms.consultDB[idx]){cms.consultDB[idx].status=val;saveCMS();}}
+function updateConsultMemo(idx,val){const cms=getCMS();if(cms.consultDB&&cms.consultDB[idx]){cms.consultDB[idx].memo=val;saveCMS();}}
+function delConsult(idx){if(!confirm('삭제하시겠습니까?'))return;const cms=getCMS();cms.consultDB.splice(idx,1);saveCMS();renderConsultDB();}
+function exportConsultCSV(){
+  const cms=getCMS();const db=cms.consultDB||[];
+  if(!db.length){alert('데이터가 없습니다');return;}
+  let csv='이름,연락처,이메일,예산,관심서비스,상태,메모,신청일\n';
+  db.forEach(c=>{csv+=[c.name,c.phone,c.email,c.budget,c.services,c.status,c.memo,c.createdAt].map(v=>'"'+(v||'').replace(/"/g,'""')+'"').join(',')+'\n';});
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='founderone-consultDB-'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+}
+
+// ═══ 전문가/파트너사 관리 ═══
+const DEFAULT_EXPERTS=[
+  {id:'aLegal',name:'본부 구축 / 가맹 영업',en:'Franchise Builder',emoji:'🏢',ciImg:'',history:'',references:[],portfolio:[]},
+  {id:'aTax',name:'세무 / 금융 설계',en:'Tax & Capital Advisor',emoji:'💰',ciImg:'',history:'',references:[],portfolio:[]},
+  {id:'aSpace',name:'상권 분석 / 임대 대행',en:'Space & Leasing Strategist',emoji:'📍',ciImg:'',history:'',references:[],portfolio:[]},
+  {id:'aTech',name:'인테리어 시공',en:'Construction Director',emoji:'🔧',ciImg:'',history:'',references:[],portfolio:[]},
+  {id:'aIT',name:'IT 장비 구축',en:'IT Equipment Director',emoji:'🖥️',ciImg:'',history:'',references:[],portfolio:[]}
+];
+
+function getExperts(){const cms=getCMS();if(!cms.experts)cms.experts=JSON.parse(JSON.stringify(DEFAULT_EXPERTS));return cms.experts;}
+function renderExpertList(){
+  const experts=getExperts();
+  const el=document.getElementById('expertList');
+  el.innerHTML=experts.map((ex,i)=>`
+    <div class="adm-card">
+      <div class="adm-card-head">
+        <h4>${ex.emoji} ${esc(ex.name)} <span style="font-size:.72rem;color:var(--gold);font-weight:600">${esc(ex.en)}</span></h4>
+        <div class="adm-card-actions">
+          <button class="adm-btn adm-btn-secondary" onclick="editExpert(${i})" style="padding:6px 14px;font-size:.75rem">✏️ 편집</button>
+          <button class="adm-btn adm-btn-danger" onclick="delExpert(${i})" style="padding:6px 14px;font-size:.75rem">🗑️</button>
+        </div>
+      </div>
+      ${ex.ciImg?'<img src="'+ex.ciImg+'" style="height:50px;margin-bottom:8px;border-radius:6px" onerror="this.style.display=\'none\'">':'<span style="font-size:.78rem;color:var(--sub)">CI 이미지 미설정</span>'}
+      <div style="font-size:.78rem;color:var(--body);margin-top:4px">
+        ${ex.history?'📜 연혁: '+esc(ex.history.substring(0,60))+'...':'📜 연혁 미등록'}
+        | 레퍼런스: ${(ex.references||[]).length}건 | 포트폴리오: ${(ex.portfolio||[]).length}건
+      </div>
+    </div>
+  `).join('');
+}
+function addNewExpert(){
+  const cms=getCMS();const experts=getExperts();
+  experts.push({id:'expert_'+Date.now(),name:'새 전문가',en:'New Expert',emoji:'⭐',ciImg:'',history:'',references:[],portfolio:[]});
+  saveCMS();renderExpertList();editExpert(experts.length-1);
+}
+function editExpert(idx){
+  const experts=getExperts();const ex=experts[idx];if(!ex)return;
+  const el=document.getElementById('expertList').children[idx];
+  el.innerHTML=`
+    <div class="adm-row"><div><label class="adm-label">전문가/파트너사명</label><input class="adm-input" id="ex_name" value="${esc(ex.name)}"></div><div><label class="adm-label">영문명</label><input class="adm-input" id="ex_en" value="${esc(ex.en)}"></div></div>
+    <div class="adm-row"><div><label class="adm-label">이모지</label><input class="adm-input" id="ex_emoji" value="${esc(ex.emoji)}" style="max-width:80px"></div><div><label class="adm-label">CI/로고 이미지 URL</label><input class="adm-input" id="ex_ci" value="${esc(ex.ciImg||'')}"></div></div>
+    ${ex.ciImg?'<img src="'+ex.ciImg+'" style="height:60px;border-radius:8px;margin-bottom:8px" onerror="this.style.display=\'none\'">':''}
+    <div class="adm-full"><label class="adm-label">연혁 (줄바꿈으로 구분)</label><textarea class="adm-textarea" id="ex_history" style="min-height:100px" placeholder="2020년 설립&#10;2021년 가맹 10호점 달성&#10;2023년 100호점 돌파">${esc(ex.history||'')}</textarea></div>
+    <div class="adm-full"><label class="adm-label">레퍼런스 (업체명, 줄바꿈으로 구분)</label><textarea class="adm-textarea" id="ex_refs" placeholder="BBQ 치킨&#10;메가커피&#10;컴포즈커피">${(ex.references||[]).join('\n')}</textarea></div>
+    <div class="adm-full"><label class="adm-label">포트폴리오 이미지 URLs (줄바꿈으로 구분)</label><textarea class="adm-textarea" id="ex_portfolio" placeholder="https://example.com/img1.jpg&#10;https://example.com/img2.jpg">${(ex.portfolio||[]).join('\n')}</textarea></div>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="adm-btn adm-btn-primary" onclick="saveExpertEdit(${idx})">💾 저장</button>
+      <button class="adm-btn adm-btn-secondary" onclick="renderExpertList()">취소</button>
+    </div>`;
+}
+function saveExpertEdit(idx){
+  const cms=getCMS();const experts=getExperts();const ex=experts[idx];
+  ex.name=document.getElementById('ex_name').value.trim()||ex.name;
+  ex.en=document.getElementById('ex_en').value.trim();
+  ex.emoji=document.getElementById('ex_emoji').value.trim();
+  ex.ciImg=document.getElementById('ex_ci').value.trim();
+  ex.history=document.getElementById('ex_history').value.trim();
+  ex.references=document.getElementById('ex_refs').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  ex.portfolio=document.getElementById('ex_portfolio').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  saveCMS();renderExpertList();renderExpertsOnPage();
+}
+function delExpert(idx){if(!confirm('삭제하시겠습니까?'))return;const experts=getExperts();experts.splice(idx,1);saveCMS();renderExpertList();renderExpertsOnPage();}
+
+// ═══ 전문가 정보를 실제 페이지 모달에 반영 ═══
+function renderExpertsOnPage(){
+  const experts=getExperts();
+  // Alliance cards 동적 렌더링
+  const grid=document.querySelector('.al-grid');
+  if(!grid)return;
+  grid.innerHTML=experts.map(ex=>`
+    <div class="al-card rv on" onclick="oM('${ex.id}')">
+      <div class="al-ic">${ex.ciImg?'<img src="'+ex.ciImg+'" style="width:100%;height:100%;object-fit:contain;border-radius:10px" onerror="this.outerHTML=\''+ex.emoji+'\'">':ex.emoji}</div>
+      <div class="al-info">
+        <h4>${esc(ex.name)}</h4><span class="al-en">${esc(ex.en)}</span>
+        <div class="al-detail">
+          <p class="al-desc">${ex.history?esc(ex.history.split('\n')[0]):'전문 분야 상세 보기'}</p>
+          ${ex.references&&ex.references.length?'<div class="al-tags">'+ex.references.slice(0,4).map(r=>'<span class="al-tg">'+esc(r)+'</span>').join('')+'</div>':''}
+        </div>
+        <div class="al-more" onclick="event.stopPropagation();toggleAl(this)">자세히 보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></div>
+      </div>
+    </div>
+  `).join('');
+
+  // 전문가 모달 데이터에 연혁/레퍼런스/포트폴리오 주입
+  experts.forEach(ex=>{
+    if(D[ex.id]){
+      let extraBlocks=[];
+      if(ex.history){extraBlocks.push({h:'📜 연혁',i:ex.history.split('\n').filter(Boolean)});}
+      if(ex.references&&ex.references.length){extraBlocks.push({h:'🏆 주요 레퍼런스',i:ex.references});}
+      if(ex.portfolio&&ex.portfolio.length){
+        // 포트폴리오 이미지는 별도 처리
+        D[ex.id]._portfolio=ex.portfolio;
+      }
+      if(ex.ciImg)D[ex.id]._ciImg=ex.ciImg;
+      if(extraBlocks.length){
+        D[ex.id].b=[...D[ex.id].b,...extraBlocks];
+      }
+    }
+  });
+}
+
+// ═══ Gemini AI 이미지 설명 생성 ═══
+async function generateAiImageDesc(){
+  const prompt=document.getElementById('admAiImgPrompt').value.trim();
+  if(!prompt){alert('설명을 입력하세요');return;}
+  const key=AI_KEY;
+  const result=document.getElementById('admAiImgResult');
+  result.style.display='block';result.innerHTML='<i>🤖 AI 생성 중...</i>';
+  try{
+    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+key,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({contents:[{parts:[{text:'다음 요청에 맞는 고품질 이미지 프롬프트를 영문으로 3개 생성해주세요. 각 프롬프트는 Midjourney/DALL-E에서 사용할 수 있는 상세한 묘사여야 합니다. 요청: '+prompt}]}],generationConfig:{temperature:0.8,maxOutputTokens:1000}})
+    });
+    const d=await r.json();
+    const txt=d.candidates?.[0]?.content?.parts?.[0]?.text||'생성 실패';
+    result.innerHTML='<strong>🤖 AI 추천 이미지 프롬프트:</strong><br><br>'+txt.replace(/\n/g,'<br>');
+  }catch(e){result.innerHTML='⚠️ 오류: '+e.message;}
+}
+
+// ═══ openAdmin 확장 ═══
+const _origOpenAdmin=openAdmin;
+openAdmin=function(){
+  _origOpenAdmin();
+  renderConsultDB();
+  renderExpertList();
+};
+
 // ═══ 페이지 로드 시 CMS 적용 ═══
 (function(){
   const saved=localStorage.getItem('f1_cms');
@@ -1551,6 +1780,7 @@ function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
     try{
       CMS=JSON.parse(saved);
       renderCMSContent();
+      if(CMS.experts)setTimeout(renderExpertsOnPage,300);
     }catch(e){}
   }
 })();

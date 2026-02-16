@@ -70,7 +70,7 @@ ul,li{list-style:none}a{text-decoration:none;color:inherit;transition:.35s}butto
 nav{position:fixed;top:0;width:100%;z-index:9000;padding:16px 0;transition:.4s;background:rgba(250,251,252,.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid transparent}
 nav.sk{padding:10px 0;background:rgba(255,255,255,.95);border-color:var(--line);box-shadow:0 2px 20px rgba(0,0,0,.04)}
 .nr{display:flex;justify-content:space-between;align-items:center}
-.logo{display:flex;align-items:center;gap:10px}
+.logo{display:flex;align-items:center;gap:10px;-webkit-user-select:none;user-select:none}
 .logo-m{width:38px;height:38px;background:var(--navy);color:var(--gold);border-radius:10px;font-weight:800;font-size:.95rem;letter-spacing:.5px;box-shadow:0 2px 8px rgba(12,20,37,.2)}
 .logo-t{font-weight:800;font-size:1.2rem;color:var(--navy);letter-spacing:-.5px}
 .nm{display:flex;gap:32px;align-items:center}
@@ -1088,8 +1088,8 @@ async function sendAiMsg(){
 .adm-tag-input{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
 .adm-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:var(--goldP);color:var(--navy);border:1px solid var(--goldB);border-radius:20px;font-size:.72rem;font-weight:600}
 .adm-tag .tag-x{cursor:pointer;font-weight:800;color:var(--sub);margin-left:2px}.adm-tag .tag-x:hover{color:#dc2626}
-.admin-indicator{position:fixed;top:10px;left:50%;transform:translateX(-50%);padding:6px 18px;background:var(--goldG);color:var(--navy);font-size:.72rem;font-weight:800;border-radius:50px;z-index:19999;display:none;cursor:pointer;box-shadow:0 4px 16px rgba(201,162,39,.3)}
-.admin-indicator.on{display:flex;align-items:center;gap:6px}
+.admin-indicator{position:fixed;top:0;left:0;right:0;width:100%;padding:8px 18px;background:linear-gradient(135deg,#c9a227,#e2bd4a);color:var(--navy);font-size:.75rem;font-weight:800;border-radius:0;z-index:99999;display:none;cursor:pointer;box-shadow:0 2px 12px rgba(201,162,39,.4);text-align:center;justify-content:center;transform:none}
+.admin-indicator.on{display:flex !important;align-items:center;gap:6px;justify-content:center}
 @media(max-width:768px){.admin-overlay{padding:10px}.admin-body{padding:20px 16px}.adm-row{grid-template-columns:1fr}.adm-img-results{grid-template-columns:repeat(2,1fr)}}
 </style>
 
@@ -1272,19 +1272,28 @@ function saveCMS(){
 
 // ═══ Admin 모드 토글 (로고 3번 클릭) ═══
 let logoClicks=0;let logoTimer=null;
-document.querySelector('.logo').addEventListener('click',function(e){
-  e.preventDefault();
-  logoClicks++;
-  clearTimeout(logoTimer);
-  logoTimer=setTimeout(()=>{logoClicks=0},1500);
-  if(logoClicks>=3){logoClicks=0;toggleAdminMode();}
-});
+(function(){
+  const logoEl=document.querySelector('.logo');
+  if(!logoEl){console.warn('Admin: .logo element not found');return;}
+  logoEl.addEventListener('click',function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    logoClicks++;
+    clearTimeout(logoTimer);
+    logoTimer=setTimeout(function(){logoClicks=0;},2000);
+    if(logoClicks>=3){logoClicks=0;toggleAdminMode();}
+  });
+})();
 
 function toggleAdminMode(){
   adminMode=!adminMode;
-  document.getElementById('adminBar').classList.toggle('on',adminMode);
+  var bar=document.getElementById('adminBar');
+  if(bar){
+    bar.classList.toggle('on',adminMode);
+    bar.style.display=adminMode?'flex':'none';
+  }
   if(adminMode){
-    renderCMSContent();
+    try{renderCMSContent();}catch(e){console.warn('CMS render error:',e);}
   }else{
     closeAdmin();
   }

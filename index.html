@@ -3,15 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>파운더원 FOUNDER ONE | 창업부터 매각까지, 여기서 다 됩니다</title>
+<title>파운더원 FOUNDER ONE v5.1 | 창업부터 매각까지, 여기서 다 됩니다</title>
 <meta name="description" content="프랜차이즈 본사 구축, 상권 분석, 세무 절세, 인테리어, IT 장비 — 파운더원에서 한 번에.">
 <meta name="theme-color" content="#0f172a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="파운더원 FOUNDER ONE | 창업부터 매각까지, 여기서 다 됩니다">
+<meta property="og:description" content="프랜차이즈 본사 구축, 상권 분석, 세무 절세, 인테리어, IT 장비 — 파운더원에서 한 번에.">
+<meta property="og:locale" content="ko_KR">
+<meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════
-   FOUNDER ONE v5 — PREMIUM PLATFORM
+   FOUNDER ONE v5.1 — PREMIUM PLATFORM
    ═══════════════════════════════════ */
 :root{
   --bg:#fafbfc;--white:#fff;--card:#fff;
@@ -489,7 +494,7 @@ footer .ft-top{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:40px}
         <p>보수적·기본·낙관적<br>3-Track 수익 시뮬레이션</p>
       </div>
     </div>
-    <button class="stool-cta" onclick="alert('다운로드가 시작됩니다. (실제 파일 연동 필요)')">
+    <button class="stool-cta" onclick="alert('수익 시뮬레이터 파일 준비 중입니다.\n\n무료 상담 신청 시 엑셀 파일을 이메일로 보내드립니다.\n아래 상담 신청 버튼을 이용해주세요.')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       시뮬레이터 엑셀 파일 다운로드 (Free)
     </button>
@@ -729,7 +734,7 @@ footer .ft-top{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:40px}
     <div class="ft-col"><h4>More</h4><a href="#services">양도양수</a><a href="#services">세무 절세</a><a href="#services">리스/금융</a><a href="#services">인테리어</a><a href="#services">IT 장비</a></div>
     <div class="ft-col"><h4>Contact</h4><a href="#" onclick="toggleFloatForm(event)">무료 상담 신청</a><a href="https://open.kakao.com/" target="_blank">카카오톡 1:1 상담</a><a href="tel:010-0000-0000">전화 문의</a></div>
   </div>
-  <div class="ft-bot"><p>© 2025 FOUNDER ONE. All rights reserved.</p><p>주식회사 원윌앤코 | 대표 박다빈 | 사업자등록번호 275-88-03346 | 경기도 하남시 위례학암로14번길 27, 5층 501-126호</p></div>
+  <div class="ft-bot"><p>© 2025 FOUNDER ONE v5.1. All rights reserved.</p><p>주식회사 원윌앤코 | 대표 박다빈 | 사업자등록번호 275-88-03346 | 경기도 하남시 위례학암로14번길 27, 5층 501-126호</p></div>
 </div>
 </footer>
 
@@ -957,13 +962,19 @@ function sF(e){
   cms.consultDB.unshift(entry);
   saveCMS();
   b.textContent='전송 중...';b.disabled=true;
-  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(fd).toString()})
-  .then(()=>{b.textContent='✓ 신청 완료! 곧 연락드리겠습니다';b.style.background='#059669';setTimeout(()=>{b.textContent='무료 상담 신청하기';b.style.background='';b.disabled=false;e.target.reset()},4000)})
-  .catch(()=>{b.textContent='✓ 신청 완료! 곧 연락드리겠습니다';b.style.background='#059669';b.disabled=false;setTimeout(()=>{b.textContent='무료 상담 신청하기';b.style.background='';e.target.reset()},4000)});
+  try{
+    fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(fd).toString()})
+    .then(r=>{if(!r.ok)console.warn('Form submit response:',r.status);b.textContent='신청 완료! 곧 연락드리겠습니다';b.style.background='#059669';setTimeout(()=>{b.textContent='무료 상담 신청하기';b.style.background='';b.disabled=false;e.target.reset()},4000)})
+    .catch(err=>{console.error('Form submit error:',err);b.textContent='신청 완료! 곧 연락드리겠습니다';b.style.background='#059669';b.disabled=false;setTimeout(()=>{b.textContent='무료 상담 신청하기';b.style.background='';e.target.reset()},4000)});
+  }catch(err){console.error('Form error:',err);b.textContent='전송 오류 — 카카오톡으로 문의해주세요';b.style.background='#dc2626';b.disabled=false;}
 }
 
 // ═══ AI 상담 챗봇 (Gemini) ═══
-const AI_KEY=['AIzaSyCs7QZeq1xkb6VG','j0iwtcYzr7C_jElvNXg'].join('');
+function getGeminiKey() {
+  let k = localStorage.getItem('gemini_api_key');
+  if (!k) { k = prompt('Gemini API Key를 입력하세요:'); if(k) localStorage.setItem('gemini_api_key', k); }
+  return k;
+}
 const AI_CTX=`당신은 파운더원(FOUNDER ONE)의 AI 상담 어시스턴트입니다.
 파운더원은 프랜차이즈 창업 전문 종합 솔루션 기업입니다.
 서비스: 본사 구축, 가맹 영업 대행, 임대 대행, 창업 컨설팅, 양도양수, 세무 절세, 리스/금융, 인테리어 직영 시공, IT 장비 구축
@@ -989,12 +1000,14 @@ function toggleAiChat(){
     renderAiChat();
   }
 }
+function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function renderAiChat(){
   const c=document.getElementById('aiMsgs');
   c.innerHTML=aiMsgs.map(m=>{
     const isU=m.role==='user';
+    const safeText=escHtml(m.parts[0].text).replace(/\n/g,'<br>');
     return`<div style="display:flex;${isU?'justify-content:flex-end':'justify-content:flex-start'};margin-bottom:10px">
-      <div style="max-width:85%;padding:10px 14px;border-radius:${isU?'14px 14px 4px 14px':'14px 14px 14px 4px'};background:${isU?'var(--navy)':'#f0f2f5'};color:${isU?'#fff':'var(--txt)'};font-size:.85rem;line-height:1.6;word-break:keep-all">${m.parts[0].text}</div>
+      <div style="max-width:85%;padding:10px 14px;border-radius:${isU?'14px 14px 4px 14px':'14px 14px 14px 4px'};background:${isU?'var(--navy)':'#f0f2f5'};color:${isU?'#fff':'var(--txt)'};font-size:.85rem;line-height:1.6;word-break:keep-all">${safeText}</div>
     </div>`;
   }).join('');
   c.scrollTop=c.scrollHeight;
@@ -1011,13 +1024,17 @@ async function sendAiMsg(){
   try{
     const hist=aiMsgs.filter(m=>m.role!=='system').map(m=>({role:m.role,parts:m.parts}));
     const body={system_instruction:{parts:[{text:AI_CTX}]},contents:hist};
-    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+AI_KEY,{
+    const apiKey=getGeminiKey();
+    if(!apiKey){aiMsgs.push({role:'model',parts:[{text:'API Key가 설정되지 않았습니다. 관리자에게 문의하세요.'}]});renderAiChat();return;}
+    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+apiKey,{
       method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)
     });
+    if(!r.ok) throw new Error('API 응답 오류: '+r.status);
     const d=await r.json();
     const txt=d.candidates?.[0]?.content?.parts?.[0]?.text||'죄송합니다, 잠시 후 다시 시도해주세요.';
     aiMsgs.push({role:'model',parts:[{text:txt}]});
   }catch(e){
+    console.error('AI Chat error:',e);
     aiMsgs.push({role:'model',parts:[{text:'네트워크 오류가 발생했습니다. 직접 상담을 원하시면 카카오톡으로 문의해주세요!'}]});
   }
   const ld=document.getElementById('ai-loading');if(ld)ld.remove();
@@ -1804,9 +1821,10 @@ function renderExpertsOnPage(){
 async function generateAiImageDesc(){
   const prompt=document.getElementById('admAiImgPrompt').value.trim();
   if(!prompt){alert('설명을 입력하세요');return;}
-  const key=AI_KEY;
+  const key=getGeminiKey();
+  if(!key){alert('Gemini API Key가 설정되지 않았습니다.');return;}
   const result=document.getElementById('admAiImgResult');
-  result.style.display='block';result.innerHTML='<i>🤖 AI 생성 중...</i>';
+  result.style.display='block';result.textContent='AI 생성 중...';
   try{
     const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+key,{
       method:'POST',headers:{'Content-Type':'application/json'},
@@ -1814,8 +1832,8 @@ async function generateAiImageDesc(){
     });
     const d=await r.json();
     const txt=d.candidates?.[0]?.content?.parts?.[0]?.text||'생성 실패';
-    result.innerHTML='<strong>🤖 AI 추천 이미지 프롬프트:</strong><br><br>'+txt.replace(/\n/g,'<br>');
-  }catch(e){result.innerHTML='⚠️ 오류: '+e.message;}
+    result.innerHTML='<strong>AI 추천 이미지 프롬프트:</strong><br><br>'+escHtml(txt).replace(/\n/g,'<br>');
+  }catch(e){result.textContent='오류: '+e.message;}
 }
 
 // ═══ openAdmin 확장 ═══
